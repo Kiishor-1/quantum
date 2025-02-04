@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes')
 dotenv.config()
 
 const app = express()
-const port = process.env.Port || 3003
+const port = process.env.Port || 8080
 
 mongoose.connect(process.env.MONGO_URI)
 
