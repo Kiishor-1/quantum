@@ -34,18 +34,17 @@ Response:
 }
 ```
 ### 2. **Register**
-URL: /register
-Method: POST
-Request Body:
+- **URL:** /register
+- **Method:** POST
+- **Request Body:**
 ```json
-
-{
-  "name": "User Name",
-  "dob": "1990-01-01",
-  "email": "user@example.com",
-  "password": "userpassword"
-}
-```
+   {
+   "name": "User Name",
+   "dob": "1990-01-01",
+   "email": "user@example.com",
+   "password": "userpassword"
+   }
+   ```
 
 Response:
 201 Created: If registration is successful, returns a success message.
@@ -71,9 +70,9 @@ git clone <repository-url>
 cd <project-directory>
 ```
 2. **Install Dependencies**
-``` 
-Install the required dependencies for both the frontend and backend.
 
+Install the required dependencies for both the frontend and backend.
+``json
 Frontend (React):
 ```bash
 cd frontend
