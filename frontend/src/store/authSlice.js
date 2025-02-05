@@ -44,8 +44,8 @@ export const login = (credentials) => async (dispatch) => {
 
         if (!response?.data?.success) {
             toast.dismiss(toastId);
-            toast.error(response?.data?.error || "Failed to login");
-            dispatch(setError(response?.data?.error || "Failed to login"));
+            toast.error(response?.data?.message || "Failed to login");
+            dispatch(setError(response?.data?.message || "Failed to login"));
             dispatch(setIsLoading(false));
             return;
         }
@@ -59,8 +59,8 @@ export const login = (credentials) => async (dispatch) => {
         dispatch(setIsLoading(false));
     } catch (error) {
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.error || "Error during login");
-        dispatch(setError(error?.response?.data?.error || "Error during login"));
+        toast.error(error?.response?.data?.message || "Error during login");
+        dispatch(setError(error?.response?.data?.message || "Error during login"));
         dispatch(setIsLoading(false));
     }
 };
@@ -72,8 +72,8 @@ export const register = (userData) => async (dispatch) => {
         const response = await axios.post(AUTH_ENDPOINTS.REGISTER, userData);
         if (!response?.data?.success) {
             toast.dismiss(toastId);
-            toast.error(response?.data?.error || "Registration failed");
-            dispatch(setError(response?.data?.error || "Registration failed"));
+            toast.error(response?.data?.message || "Registration failed");
+            dispatch(setError(response?.data?.message || "Registration failed"));
             dispatch(setIsLoading(false));
             return;
         }
@@ -84,8 +84,8 @@ export const register = (userData) => async (dispatch) => {
     } catch (error) {
         console.log(error)
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.error || "Error during registration");
-        dispatch(setError(error?.response?.data?.error || "Error during registration"));
+        toast.error(error?.response?.data?.message || "Error during registration");
+        dispatch(setError(error?.response?.data?.message || "Error during registration"));
         dispatch(setIsLoading(false));
     }
 };
