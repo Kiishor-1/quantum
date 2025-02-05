@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, useNavigate, Link } from "react-router-dom";
-import "primereact/resources/themes/lara-light-blue/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
 import { logout } from "../store/authSlice";
 import { MdOutlineLogout } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";
+import LogoutConfirmation from "../components/LogoutConfirmation";
+import Modal from "../components/Modal";
+import "primereact/resources/themes/lara-light-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+
 
 export default function Home() {
   const { user, token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch(); // Get dispatch function
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     if (!user || !token) {
@@ -27,9 +31,9 @@ export default function Home() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleLogout = () => {
-    dispatch(logout()); // Dispatch logout action
-    navigate("/login"); // Redirect to login page after logout
+  const handleConfirmLogout = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
   const navItems = [
@@ -49,25 +53,32 @@ export default function Home() {
         <div className="p-4 text-3xl font-semibold">Dashboard</div>
         <ul className="mt-4 space-y-2 px-4 w-full flex-1">
           {navItems.map((item) => (
-            <li
+            <Link
+              to={item.path}
               key={item.name}
               className="px-6 py-3 hover:bg-gray-200 rounded-md cursor-pointer flex items-center space-x-3"
             >
               {item.icon}
-              <Link to={item.path} className="block">
+              <span className="block">
                 {item.name}
-              </Link>
-            </li>
+              </span>
+            </Link>
           ))}
         </ul>
-        <li className="mt-auto px-6 m-4 py-3 hover:bg-gray-200 rounded-md cursor-pointer flex items-center space-x-3">
+        <button onClick={() => setShowLogoutModal(true)} className="mt-auto px-6 m-4 py-3 hover:bg-gray-200 rounded-md cursor-pointer flex items-center space-x-3">
           <MdOutlineLogout />
-          <button onClick={handleLogout} className="block w-full text-left">
+          <span className="block w-full text-left">
             Logout
-          </button>
-        </li>
+          </span>
+        </button>
       </div>
 
+      <Modal isOpen={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
+        <LogoutConfirmation
+          onConfirm={handleConfirmLogout}
+          onCancel={() => setShowLogoutModal(false)}
+        />
+      </Modal>
       <Outlet context={{ toggleSidebar }} />
     </div>
   );

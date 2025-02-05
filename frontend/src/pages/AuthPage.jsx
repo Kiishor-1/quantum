@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PiUserCircleFill } from "react-icons/pi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { useDispatch, useSelector } from 'react-redux';
-import { isValidCredentials } from '../utility/isValidCredentials';
+import { useDispatch, useSelector } from "react-redux";
+import { isValidCredentials } from "../utility/isValidCredentials";
 import toast from "react-hot-toast";
 import { login, register } from "../store/authSlice";
 
@@ -38,7 +38,7 @@ const AuthPage = ({ type }) => {
 
     useEffect(() => {
         if (user && token) {
-            navigate('/');
+            navigate("/");
         }
     }, [user, token, navigate]);
 
@@ -50,7 +50,7 @@ const AuthPage = ({ type }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const newErrors = {};
         if (!formData.email) newErrors.email = "Email is required";
         if (!formData.password) newErrors.password = "Password is required";
@@ -62,7 +62,7 @@ const AuthPage = ({ type }) => {
             toast.error(firstError);
             return;
         }
-    
+
         if (isLogin) {
             try {
                 await dispatch(login(formData));
@@ -73,14 +73,13 @@ const AuthPage = ({ type }) => {
         } else {
             try {
                 await dispatch(register(formData));
-                setFormData({ name: "", dob: "", email: "", password: "" }); 
+                setFormData({ name: "", dob: "", email: "", password: "" });
                 navigate("/login");
             } catch (err) {
                 toast.error(err || "Registration failed");
             }
         }
     };
-    
 
     return (
         <div className="flex flex-col md:p-0 p-4 items-center justify-center h-screen bg-gradient-to-b from-teal-600 to-teal-800">
@@ -89,12 +88,26 @@ const AuthPage = ({ type }) => {
                     {isLogin ? "SIGN IN" : "SIGN UP"}
                 </h2>
                 <div className="relative w-full bg-gray-900 h-40 rounded-lg">
-                    <img className="absolute bottom-0 z-[2] opacity-30" src="./waveLeft.svg" alt="" />
-                    <img className="absolute bottom-0 z-[2] opacity-70" src="./wavePlane.svg" alt="" />
-                    <img className="absolute bottom-0 z-[2] opacity-40" src="./waveRight.svg" alt="" />
+                    <img
+                        className="absolute bottom-0 z-[2] opacity-30"
+                        src="./waveLeft.svg"
+                        alt=""
+                    />
+                    <img
+                        className="absolute bottom-0 z-[2] opacity-70"
+                        src="./wavePlane.svg"
+                        alt=""
+                    />
+                    <img
+                        className="absolute bottom-0 z-[2] opacity-40"
+                        src="./waveRight.svg"
+                        alt=""
+                    />
                 </div>
                 <div className="relative p-8 py-16 rounded-lg shadow-lg w-full text-white">
-                    <PiUserCircleFill className="text-[8rem] absolute left-[37.5%] top-[-4rem] z-[5]" />
+                    <div className="absolute left-0 right-0 top-[-4rem] z-[5] text-center">
+                        <PiUserCircleFill className="text-[8rem] w-full" />
+                    </div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {!isLogin && (
                             <input
@@ -146,20 +159,35 @@ const AuthPage = ({ type }) => {
                         </div>
                         <button
                             type="submit"
-                            className={`w-full p-2 rounded font-bold ${isDisabled ? "bg-gray-500 cursor-not-allowed" : "bg-teal-500 hover:bg-teal-600"}`}
+                            className={`w-full p-2 rounded font-bold ${isDisabled
+                                    ? "bg-gray-500 cursor-not-allowed"
+                                    : "bg-teal-500 hover:bg-teal-600"
+                                }`}
                             disabled={isDisabled}
                         >
-                            {isLogin ? "LOGIN" : "REGISTER"}
+                            {isLoading
+                                ? isLogin
+                                    ? "Logging in..."
+                                    : "Registering..."
+                                : isLogin
+                                    ? "LOGIN"
+                                    : "REGISTER"}
                         </button>
                     </form>
                     <div className="text-center mt-4">
                         {isLogin ? (
                             <p>
-                                {`Don't have an account?`} <Link to="/register" className="text-teal-400">Register</Link>
+                                Don't have an account?{" "}
+                                <Link to="/register" className="text-teal-400">
+                                    Register
+                                </Link>
                             </p>
                         ) : (
                             <p>
-                                Already have an account? <Link to="/login" className="text-teal-400">Login</Link>
+                                Already have an account?{" "}
+                                <Link to="/login" className="text-teal-400">
+                                    Login
+                                </Link>
                             </p>
                         )}
                     </div>
